@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "GetReceipt";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+@section PageHeader{
+    Print Fee Receipt
+}
+
+@if (!string.IsNullOrWhiteSpace(Request.QueryString["Error"]))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-danger">
+                <b>Invalid Transaction ID</b>
+            </div>
+        </div>
+    </div>
+}
+
+@using (Html.BeginForm("GetReceipt", "Fee", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <h4 class="form-h4">Generate Bill</h4>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label col-md-6" for="trans">Transaction ID</label>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" name="id" id="trans" placeholder="Transaction ID" data-val-required="This field is required." data-val-number="The field Transaction ID must be a number." data-val="true" />
+                    <span class="field-validation-valid help-block" data-valmsg-replace="true" data-valmsg-for="id"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+    <div class="row">
+        <div class="col-md-12" style="text-align:center;">
+            <input type="submit" style="margin-top:30px;" class="btn btn-success btn-lg" value="Generate Receipt in PDF to Print" />
+        </div>
+    </div>
+}

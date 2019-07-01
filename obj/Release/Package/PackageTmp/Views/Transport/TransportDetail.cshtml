@@ -1,0 +1,80 @@
+﻿@model CentralAcademy.MyModels.TransportDetail
+@{
+    ViewBag.Title = "TransportDetail";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+@section PageHeader{
+    Register Vehicle
+}
+
+@if (!string.IsNullOrWhiteSpace(Request.QueryString["Save"]))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-success">
+                New Record Added Successfully
+            </div>
+        </div>
+    </div>
+}
+
+@using (Html.BeginForm("TransportDetail", "Transport", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <h4 class="form-h4">Register New Vehicle</h4>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Type, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.DropDownListFor(
+                        m => m.Type, new SelectListItem[]
+                        {
+                            new SelectListItem() { Text = "Auto"},
+                            new SelectListItem() { Text="Riksha"},
+                            new SelectListItem() { Text="Bus"},
+                        }, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(m => m.VehicleNumber, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.VehicleNumber, new { @class = "form-control", placeholder = "Contact number" })
+                    @Html.ValidationMessageFor(m => m.VehicleNumber)
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(m => m.DriverName, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.DriverName, new { @class = "form-control", placeholder = "Number" })
+                    @Html.ValidationMessageFor(m => m.DriverName)
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(m => m.ContactNumber, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.ContactNumber, new { @class = "form-control", placeholder = "Number" })
+                    @Html.ValidationMessageFor(m => m.ContactNumber)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="padding:20px">
+        <div class="col-md-12" style="text-align:center">
+            <input type="submit" class="btn btn-primary" value="Submit" />
+            <input type="reset" class="btn btn-default" />
+        </div>
+    </div>
+}

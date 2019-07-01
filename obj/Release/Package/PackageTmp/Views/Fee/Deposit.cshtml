@@ -1,0 +1,69 @@
+﻿@model CentralAcademy.MyModels.FeeDepositModel
+
+@{
+    ViewBag.Title = "Deposit";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+@section PageHeader{
+    Submit Student Fee
+}
+
+@if (!string.IsNullOrWhiteSpace(Request.QueryString["Success"]))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-success">
+                Fee Deposit Successfully. Transaction ID for this deposit is <b>@Request.QueryString["transactionID"]</b>.<br/>
+                @Html.ActionLink("Print Receipt", "GenerateReceipt", new { id = Request.QueryString["transactionID"] })
+            </div>
+        </div>
+    </div>
+}
+
+@using (Ajax.BeginForm("FeeDepositPartial", "Fee", null,
+    new AjaxOptions
+    {
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "feeForm",
+        LoadingElementId = "loader"
+    }, new { @class = "form-horizontal" }))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <h4 class="form-h4">Student details</h4>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.ScholarNumber, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    <input type="text" name="scholarNumber" class="form-control" placeholder="Scholar Number">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-1" style="text-align:right">
+            <h3 style="margin-top:0">or</h3>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.FeeBookNo, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    <input type="text" name="feeBookNumber" class="form-control" placeholder="Feebook Number">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-1">
+            <input type="submit" class="btn btn-primary" value="Go" />
+        </div>
+    </div>
+}
+
+<div id="loader" class="row" style="display:none;">
+    <div class="col-md-12" style="text-align:center;">
+        <img style="margin-top:40px;" src="~/Content/495.GIF" />
+    </div>
+</div>
+
+<div id="feeForm">
+
+</div>

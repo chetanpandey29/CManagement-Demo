@@ -1,0 +1,132 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <title>@ViewBag.Title || Central Academy School Vikas Nagar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="~/Scripts/jquery-2.0.3.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Scripts/myScript.js"></script>
+    <link href="~/Content/metro-bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/myStyle.css" rel="stylesheet" />
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-33608557-2', 'bdn2.com');
+        ga('send', 'pageview');
+    </script>
+</head>
+<body>
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="@Url.Action("Index","Home")" style="margin:0;"><img style="margin-right:10px;margin-bottom:0px; margin-top:-5px; height:20px; width:auto;" src="~/Resource/30_37logo.png" />Central Academy</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="@Url.Action("Index","Home")">Home</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Student <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Registration", "Add", "Student")</li>
+                            <li>@Html.ActionLink("Search By Scholar No", "Search", "Student")</li>
+                            <li>@Html.ActionLink("Advance Search", "AdvanceSearch", "Student")</li>
+                            <li>@Html.ActionLink("Student Relation", "AddRelation", "Student")</li>
+                            <li>@Html.ActionLink("Export", "GetAllStudent", "Student")</li>
+                            <li>@Html.ActionLink("Database Backup", "GenerateBackup", "Home")</li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Transport <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Register Vehicle", "TransportDetail", "Transport")</li>
+                            <li>@Html.ActionLink("Allocation", "Allocation", "Transport")</li>
+                            <li>@Html.ActionLink("Advance Search", "AdvanceSearch", "Transport")</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Fee <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Fee Deposit", "Deposit", "Fee")</li>
+                            <li>@Html.ActionLink("Fee Update", "Update", "Fee")</li>
+                            <li>@Html.ActionLink("Fee Structure", "FeeStructure", "Fee")</li>
+                            <li>@Html.ActionLink("Print Receipt", "GetReceipt", "Fee")</li>
+                            <li>@Html.ActionLink("Daily Fee Collection", "DailyFeeCollection", "Fee")</li>
+                            <li>@Html.ActionLink("Defaulter Search", "Defaulter", "Fee")</li>
+                        </ul>
+                    </li>
+                    @*<li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reporting <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Student Report", "StudentReport", "Reporting")</li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li class="divider"></li>
+                            <li class="dropdown-header">Nav header</li>
+                            <li><a href="#">Separated link</a></li>
+                            <li><a href="#">One more separated link</a></li>
+                        </ul>
+                    </li>*@
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>@Html.ActionLink("Sign out", "SignOut", "Account")</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="page-header">
+                            <h2>@RenderSection("PageHeader")</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="padding:5px; background-color:#eee; position:fixed; bottom:0; width:100%; font-size:90%">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    &copy; 2016 - Central Academy School - Vikas Nagar
+                </div>
+                <div id="Developed By" class="col-md-8">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $('#ourContent').load('http://www.myignou.com/We/ForCAS');
+    </script>
+</body>
+</html>
+

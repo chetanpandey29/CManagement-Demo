@@ -1,0 +1,202 @@
+﻿@model CentralAcademy.MyModels.TransportAllocation
+
+@{
+    ViewBag.Title = "TransportHolders";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+@section PageHeader{
+    Transport Allocation
+}
+
+@if (!string.IsNullOrWhiteSpace(Request.QueryString["Error"]))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-danger">
+                @Request.QueryString["Error"]
+            </div>
+        </div>
+    </div>
+}
+
+@if (!string.IsNullOrWhiteSpace(Request.QueryString["Success"]))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-success">
+                @Request.QueryString["Success"]
+            </div>
+        </div>
+    </div>
+}
+
+@using (Html.BeginForm("Allocation", "Transport", FormMethod.Get, new { @class = "form-horizontal" }))
+{
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="col-md-6 control-label">Scholar Number</label>
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="scholar" id="scholar" placeholder="Scholar Number" value="@Request.QueryString["scholar"]" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="submit">Go</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@{
+    int _sch = 0;
+    if (!string.IsNullOrWhiteSpace(Request.QueryString["scholar"]) && int.TryParse(Request.QueryString["scholar"], out _sch))
+    {
+        using (var db = new CAS_MVC_4.Models.CentralAcademyContext())
+        {
+            var student = db.Students.Where(s => s.ScholarNumber == _sch).FirstOrDefault();
+            <div class="row">
+                <div class="col-md-12">
+                    <h4 class="form-h4">
+                        Transportation History
+                    </h4>
+                </div>
+                <div class="col-md-12">
+                    @if (student != null)
+                    {
+                        var trans = db.TransportAllocations.Where(s => s.ScholarNumber == _sch).OrderBy(m => m.StartDate).ToList();
+                        <table class="table table-striped table-responsive">
+                            <thead><tr><th>Type</th><th>Start Date</th><th>Left Date</th></tr></thead>
+                            @if (trans.Count == 0)
+                            {
+                                <tr>
+                                    <td colspan="3" style="text-align:center">No Transport Allocated to This Student</td>
+                                </tr>
+                            }
+                            else
+                            {
+                                foreach (var item in trans)
+                                {
+                                    <tr>
+                                        <td>@item.Type</td>
+                                        <td>@item.StartDate.ToString("dd-MM-yyyy")</td>
+                                        <td>
+                                            @if (item.LeftDate.HasValue)
+                                            {
+                                                @item.LeftDate.Value.ToString("dd-MM-yy")
+                                            }
+                                            else
+                                            {
+                                                using (Html.BeginForm("Deallocate", "Transport", FormMethod.Post, new { @class = "form-horizontal" }))
+                                                {
+                                                    <input type="hidden" name="scholarNumber" value="@Request.QueryString["scholar"]"/>
+                                                    <div class="form-group" style="width:350px;">
+                                                        <label class="col-md-4" for="scholarNumber" style="font-weight:normal">Current</label>
+                                                        <div class="col-md-8">
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" name="leftDate" id="scholarNumber" data-val-required="" placeholder="Left Date" data-val="true" data-val-regex="Invalid date format" data-val-regex-pattern="^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$" />
+                                                                <span class="input-group-btn">
+                                                                    <button class="btn btn-primary" type="submit">Deallocate</button>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </table>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 class="form-h4">Allocate New Transport</h4>
+                            </div>
+                        </div>
+                        if (trans.Count == 0 || trans.Last(t => true).LeftDate.HasValue)
+                        {
+                            using (Html.BeginForm("Allocation", "Transport", FormMethod.Post, new { @class = "form-horizontal" }))
+                            {
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.ScholarNumber, new { @class = "col-md-6 control-label" })
+                                            <div class="col-md-6">
+                                                <input type="hidden" name="ScholarNumber" value="@student.ScholarNumber" />
+                                                <input type="text" class="form-control disabled"  value="@student.ScholarNumber" disabled />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.Type, new { @class = "col-md-6 control-label" })
+                                            <div class="col-md-6">
+                                                @Html.DropDownListFor(
+                                                m => m.Type, new SelectListItem[]
+                                                {
+                                                    new SelectListItem() { Text = "Auto"},
+                                                    new SelectListItem() { Text="Riksha"},
+                                                    new SelectListItem() { Text="Bus"},
+                                                }, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.SourceLocation, new { @class = "col-md-6 control-label" })
+                                            <div class="col-md-6">
+                                                @Html.TextBoxFor(m => m.SourceLocation, new { @class = "form-control", placeholder = "Source Location" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.StartDate, new { @class = "col-md-6 control-label" })
+                                            <div class="col-md-6">
+                                                @Html.TextBoxFor(m => m.StartDate, new { @class = "form-control", placeholder = "dd-mm-yyyy", data_val_required = "", data_val = "true", data_val_regex = "Invalid date format", data_val_regex_pattern = @"^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.LeftDate, new { @class = "col-md-6 control-label" })
+                                            <div class="col-md-6">
+                                                @Html.TextBoxFor(m => m.LeftDate, new { @class = "form-control", placeholder = "dd-mm-yyyy", data_val = "true", data_val_regex = "Invalid date format", data_val_regex_pattern = @"^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12" style="text-align:center">
+                                        <input type="submit" class="btn btn-primary" value="Allocate" />
+                                        <input type="reset" class="btn btn-default" value="Reset" />
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="alert alert-info">
+                                        To Allocate Transfer, You need to Deallocate Current Transport First
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="alert alert-danger">
+                            Invalid Scholar Number
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    }
+}

@@ -1,0 +1,68 @@
+﻿@model IEnumerable<CAS_MVC_4.Models.Student>
+
+<style>
+    td{
+        border:1px solid #eee;
+    }
+    .th{
+        font-weight:bold;
+    }
+</style>
+
+<table>
+    <tr class="th">
+        <td>Scholar Number</td>
+        <td>Name</td>
+        <td>Fee Book No</td>
+        <td>Gender</td>
+        <td>Date of Birth</td>
+        <td>Class</td>
+        <td>Section</td>
+        <td>Group Name</td>
+        <td>Session</td>
+        <td>Father Name</td>
+        <td>Father Contact</td>
+        <td>Mother Name</td>
+        <td>Mother Contact</td>
+        <td>Adress</td>
+        <td>Previous School</td>
+        <td>Initial Class</td>
+        <td>Email id</td>
+        <td>Nationality</td>
+        <td>Transport</td>
+        <td>Concession</td>
+        <td>Emergency Contact Person</td>
+        <td>Emergency Relation</td>
+        <td>Emergency Address</td>
+        <td>Emergency Contact No</td>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.ScholarNumber</td>
+            <td>@item.StudentName</td>
+            <td>@item.FeebookNumber</td>
+            <td>@item.Gender.ToString()</td>
+            <td>@item.DateOfBirth.ToString("dd-MM-yyyy")</td>
+            <td>@item.Class</td>
+            <td>@item.Section</td>
+            <td>@item.GroupName</td>
+            <td>@item.Session</td>
+            <td>@item.FatherName</td>
+            <td>@item.FatherContactNumber</td>
+            <td>@item.MotherName</td>
+            <td>@item.MotherContactNumber</td>
+            <td>@item.Address</td>
+            <td>@item.PreviousSchool</td>
+            <td>@item.InitialClass</td>
+            <td>@item.EmailID</td>
+            <td>@item.Nationality</td>
+            <td>@(item.Transport ? "Yes" : "No")</td>
+            <td>@(item.Concession? "Yes" : "No")</td>
+            <td>@item.EmergencyContactPerson</td>
+            <td>@item.EmergencyRelation</td>
+            <td>@item.EmergencyAddress</td>
+            <td>@item.EmergencyContactNumber</td>
+        </tr>
+    }
+</table>

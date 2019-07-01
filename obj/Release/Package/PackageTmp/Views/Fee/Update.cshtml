@@ -1,0 +1,54 @@
+﻿@model CentralAcademy.MyModels.FeeDepositModel
+@{
+    ViewBag.Title = "Update";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+@section PageHeader
+    {
+    Fee Update
+}
+
+@if (!string.IsNullOrWhiteSpace(Request.QueryString["Success"]))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-success">
+                Fee Record Updated Successfully. Transaction ID for this deposit is <b>@Request.QueryString["transactionID"]</b>.<br />
+                @Html.ActionLink("Print Receipt", "GenerateReceipt", new { id = Request.QueryString["transactionID"] })
+            </div>
+        </div>
+    </div>
+}
+
+@using (Ajax.BeginForm("_UpdatePartial", null, new AjaxOptions { InsertionMode = InsertionMode.Replace, UpdateTargetId = "transForm", LoadingElementId = "loader" }, new { @class = "form-horizontal" }))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <h4 class="form-h4">Update Fee Deposit Record</h4>
+        </div>
+        <div class="col-md-8">
+            <div class="form-group">
+                <label class="control-label col-md-6" for="id">Receipt No</label>
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" name="id" id="id" class="form-control" placeholder="Receipt No">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="submit">Go</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div id="loader" class="row" style="display:none;">
+    <div class="col-md-12" style="text-align:center;">
+        <img style="margin-top:40px;" src="~/Content/495.GIF" />
+    </div>
+</div>
+
+<div id="transForm">
+
+</div>

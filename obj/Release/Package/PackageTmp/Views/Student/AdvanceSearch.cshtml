@@ -1,0 +1,222 @@
+﻿@model CentralAcademy.MyModels.StudentSearchModel
+
+@{
+    ViewBag.Title = "AdvanceSearch";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+@section PageHeader{
+    Advance Search
+}
+
+@using (Html.BeginForm("AdvanceSearch", "Student", FormMethod.Get, new { @class = "form-horizontal" }))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <h4 class="form-h4">
+                Search Criteria (At least one field required)
+            </h4>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.StudentName, new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.StudentName, new { @class = "form-control", placeholder = "Student Name" })
+                    @Html.ValidationMessageFor(m => m.StudentName)
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.FatherName, new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.FatherName, new { @class = "form-control", placeholder = "Father Name" })
+                    @Html.ValidationMessageFor(m => m.FatherName)
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Class, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.DropDownListFor(
+                        m => m.Class, new SelectListItem[]
+                        {
+                            new SelectListItem() { Text = "All"},
+                            new SelectListItem() { Text = "NUR"},
+                            new SelectListItem() { Text="KG"},
+                            new SelectListItem() { Text="Prep"},
+                            new SelectListItem() { Text="1st", Value = "1"},
+                            new SelectListItem() { Text="2nd", Value = "2"},
+                            new SelectListItem() { Text="3rd", Value = "3"},
+                            new SelectListItem() { Text="4th", Value= "4"},
+                            new SelectListItem() { Text="5th", Value = "5"},
+                            new SelectListItem() { Text="6th", Value = "6"},
+                            new SelectListItem() { Text="7th", Value = "7"},
+                            new SelectListItem() { Text="8th", Value = "8"},
+                            new SelectListItem() { Text="9th", Value = "9"},
+                            new SelectListItem() { Text="10th", Value = "10"},
+                            new SelectListItem() { Text="11th", Value = "11"},
+                            new SelectListItem() { Text="12th", Value = "12"},
+                        }, new { @class = "form-control", style = "display:inline; width:90px;" })
+                    @Html.DropDownListFor(
+                        m => m.Section,
+                            new SelectList(new[] { "All", "A", "B", "C", "D", "E", "F", "G", "NEW" })
+                            , new { @class = "form-control", style = "display:inline; width:70px;" })
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.DateOfBirth, new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.DateOfBirth, "{0:dd-MM-yyyy}", new { @class = "form-control", placeholder = "Date of Birth", data_val = "false" })
+                    @Html.ValidationMessageFor(m => m.DateOfBirth)
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Session, new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    @Html.DropDownListFor(m => m.Session, new SelectList(new[] { "", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020" }), new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Session)
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Locality, new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.Locality, new { @class = "form-control", placeholder = "Group" })
+                    @Html.ValidationMessageFor(m => m.Locality)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12" style="text-align:center">
+            <input type="submit" class="btn btn-primary" value="Search" />
+            <input type="reset" class="btn btn-default" value="Reset" />
+        </div>
+    </div>
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h4 class="form-h4">Search Result</h4>
+    </div>
+</div>
+
+@{
+    List<CAS_MVC_4.Models.Student> students = null;
+    using (var db = new CAS_MVC_4.Models.CentralAcademyContext())
+    {
+        if (Request.QueryString.Count > 0)
+        {
+            students = new List<CAS_MVC_4.Models.Student>();
+
+            var st = db.Students.Where(m => true);
+
+            if (!string.IsNullOrWhiteSpace(Model.StudentName))
+            {
+                st = st.Where(s => s.StudentName.ToUpper().Contains(Model.StudentName.ToUpper()));
+            }
+            if (!string.IsNullOrWhiteSpace(Model.FatherName))
+            {
+                st = st.Where(s => s.FatherName.ToUpper().Contains(Model.FatherName.ToUpper()));
+            }
+            if (Model.Class.ToUpper() != "ALL")
+            {
+                st = st.Where(s => s.Class.ToUpper().Equals(Model.Class.ToUpper()));
+            }
+            if (Model.Section.ToUpper() != "ALL")
+            {
+                st = st.Where(s => s.Section.ToUpper().Equals(Model.Section.ToUpper()));
+            }
+            if (!string.IsNullOrWhiteSpace(Model.Locality))
+            {
+                st = st.Where(s => s.Address.ToUpper().Contains(Model.Locality.ToUpper()));
+            }
+            if (Model.DateOfBirth != null)
+            {
+                st = st.Where(s => s.DateOfBirth == Model.DateOfBirth);
+            }
+            if (Model.Session != null)
+            {
+                st = st.Where(s => s.Session == Model.Session);
+            }
+
+            students = st.ToList();
+        }
+    }
+}
+
+@if (students != null)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <h5>Total Records Found: @students.Count</h5>
+        </div>
+    </div>
+}
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>Scholar No</th>
+                    <th>Name</th>
+                    <th>Father Name</th>
+                    <th>Date of Birth</th>
+                    <th>Class & Sec</th>
+                    <th>Address</th>
+                    <th>Session</th>
+                    <th title="Feebook Number">FeeBook Number</th>
+                </tr>
+            </thead>
+            @{
+                if (students != null)
+                {
+                    if (students.Count() == 0)
+                    {
+                        <tr>
+                            <td colspan="8" style="text-align:center">No record found</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var student in students)
+                        {
+                            <tr>
+                                <td>@Html.ActionLink(student.ScholarNumber.ToString(), "Search", "Student", new { id = student.ScholarNumber }, null)</td>
+                                <td>@student.StudentName</td>
+                                <td>@student.FatherName</td>
+                                <td>@student.DateOfBirth.ToString("dd-MM-yyyy")</td>
+                                <td>@student.Class @(string.IsNullOrWhiteSpace(student.Section) ? "" : "(" + student.Section + ")")</td>
+                                <td>@student.Address</td>
+                                <td>@student.Session</td>
+                                <td>@student.FeebookNumber</td>
+                            </tr>
+                        }
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="8" style="text-align:center">Please Provide a Search Criteria</td>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+    <div class="col-md-12">
+
+    </div>
+</div>

@@ -1,0 +1,81 @@
+﻿@model List<CAS_MVC_4.Models.FeeTransaction>
+
+@{
+    DateTime startDate = Convert.ToDateTime(ViewBag.StartDate);
+    DateTime endDate = Convert.ToDateTime(ViewBag.EndDate);
+}
+
+<style>
+    td {
+        border: 1px solid #eee;
+    }
+
+    .th {
+        font-weight: bold;
+    }
+</style>
+
+<table>
+    <tr class="th">
+        <td>Transaction#</td>
+        <td>Scholar#</td>
+        <td>From Instalment</td>
+        <td>To Instalment</td>
+        <td>Admission Fee</td>
+        <td>Tuition Fee</td>
+        <td>Activity Fee</td>
+        <td>Development Fee</td>
+        <td>Conveyance Fee</td>
+        <td>Late Fee</td>
+        <td>Concession</td>
+        <td>Payment Mode</td>
+        <td>Total</td>
+    </tr>
+    @if (Model.Count == 0)
+    {
+        <tr>
+            <td colspan="13" style="text-align:center">No Records Found</td>
+        </tr>
+    }
+    else
+    {
+        decimal grandTotal = 0;
+        while (startDate <= endDate)
+        {
+            decimal dayTotal = 0;
+            <tr>
+                <td colspan="13" style="font-weight:bold">Date: @startDate.ToString("dd-MM-yyyy")</td>
+            </tr>
+        var dayCollection = Model.Where(m => m.Date.Date == startDate);
+            foreach (var item in dayCollection)
+            {
+                decimal total = item.AdmissionFee + item.ActivityFee + item.DevelopmentFee + item.ConveyanceFee + item.LateFee - item.Concession;
+                <tr>
+                    <td>@item.TransactionID</td>
+                    <td>@item.ScholarNumber</td>
+                    <td>@item.FromInstallment</td>
+                    <td>@item.ToInstallment</td>
+                    <td>@item.AdmissionFee.ToString("0.00")</td>
+                    <td>@item.TuitionFee.ToString("0.00")</td>
+                    <td>@item.ActivityFee.ToString("0.00")</td>
+                    <td>@item.DevelopmentFee.ToString("0.00")</td>
+                    <td>@item.ConveyanceFee.ToString("0.00")</td>
+                    <td>@item.LateFee.ToString("0.00")</td>
+                    <td>@item.Concession.ToString("0.00")</td>
+                    <td>@item.PaymentMode</td>
+                    <td>@total.ToString("0.00")</td>
+                </tr>
+                dayTotal += total;
+            }
+            <tr>
+                <td colspan="13" style="font-weight:bold">Day Total: @dayTotal.ToString("0.00")</td>
+            </tr>
+            <tr></tr>
+            grandTotal += dayTotal;
+            startDate = startDate.AddDays(1);
+        }
+        <tr>
+            <td colspan="13" style="font-weight:bold">Grand Total: @grandTotal.ToString("0.00")</td>
+        </tr>
+    }
+</table>

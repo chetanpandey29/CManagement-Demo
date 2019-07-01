@@ -1,0 +1,177 @@
+﻿@model CentralAcademy.MyModels.TransportSearch
+@{
+    ViewBag.Title = "Transport Allocation Advance Search";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+@section PageHeader{
+    Advance Search
+}
+
+@using (Html.BeginForm("AdvanceSearch", "Transport", FormMethod.Get, new { @class = "form-horizontal" }))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <h4 class="form-h4">Search Criteria (At least one field required)</h4>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(m => m.ScholarNumber, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.ScholarNumber, new { @class = "form-control", placeholder = "Scholar No" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(m => m.TransportType, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.DropDownListFor(
+                        m => m.TransportType, new SelectListItem[]
+                        {
+                            new SelectListItem {Text = "All"},
+                            new SelectListItem() { Text = "Auto"},
+                            new SelectListItem() { Text="Riksha"},
+                            new SelectListItem() { Text="Bus"},
+                        }, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(m => m.SourceLocation, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.SourceLocation, new { @class = "form-control", placeholder = "Source Location" })
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label col-md-6">Show only Current</label>
+                <div class="col-md-6">
+                    <div class="checkbox">
+                        <label>
+                            @Html.CheckBoxFor(m => m.ShowCurrent)
+                            Show Current
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-12" style="text-align:center">
+            <input type="submit" class="btn btn-primary" value="Search" />
+            <input type="reset" class="btn btn-default" value="Reset" />
+        </div>
+    </div>
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h4 class="form-h4">Search Result</h4>
+    </div>
+</div>
+
+@{
+    List<CAS_MVC_4.Models.TransportAllocation> trans = null;
+    using (var db = new CAS_MVC_4.Models.CentralAcademyContext())
+    {
+        if (Request.QueryString.Count > 0)
+        {
+            trans = new List<CAS_MVC_4.Models.TransportAllocation>();
+
+            var tr = db.TransportAllocations.Where(m => true);
+
+            if (Model.ScholarNumber.HasValue)
+            {
+                tr = tr.Where(s => s.ScholarNumber == Model.ScholarNumber);
+            }
+            if (Model.TransportType.ToUpper() != "ALL")
+            {
+                tr = tr.Where(s => s.Type.ToUpper().Contains(Model.TransportType.ToUpper()));
+            }
+            if (!string.IsNullOrWhiteSpace(Model.SourceLocation))
+            {
+                tr = tr.Where(s => s.SourceLocation.ToUpper().Contains(Model.SourceLocation.ToUpper()));
+            }
+            if (Model.ShowCurrent)
+            {
+                tr = tr.Where(s => !s.LeftDate.HasValue);
+            }
+
+            trans = tr.ToList();
+        }
+    }
+}
+
+@if (trans != null)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <h5>Total Records Found: @trans.Count</h5>
+        </div>
+    </div>
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>Scholar Number</th>
+                    <th>Student Name</th>
+                    <th>Type</th>
+                    <th>Source Location</th>
+                    <th>Start Date</th>
+                    <th>Left Date</th>
+                </tr>
+            </thead>
+            @{
+                if (trans != null)
+                {
+                    if (trans.Count() == 0)
+                    {
+                        <tr>
+                            <td colspan="6" style="text-align:center">No record found</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var trs in trans)
+                        {
+                            using (var db = new CAS_MVC_4.Models.CentralAcademyContext())
+                            {
+                                <tr>
+                                    <td>@trs.ScholarNumber</td>
+                                    <td>@db.Students.Where(s => s.ScholarNumber == trs.ScholarNumber).First().StudentName</td>
+                                    <td>@trs.Type</td>
+                                    <td>@trs.SourceLocation</td>
+                                    <td>@trs.StartDate.ToString("dd-MM-yyyy")</td>
+                                    <td>@(trs.LeftDate.HasValue ? trs.LeftDate.Value.ToString("dd-MM-yyyy") : "Current")</td>
+                                </tr>
+                            }
+
+                        }
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="6" style="text-align:center">Please Provide a Search Criteria</td>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+    <div class="col-md-12">
+
+    </div>
+
+</div>

@@ -1,0 +1,174 @@
+﻿@model CentralAcademy.MyModels.FeeDepositModel
+
+@if (false)
+{
+    <script src="~/Scripts/jquery-2.0.3.min.js"></script>
+}
+
+<script type="text/javascript">
+    $('input[name="Concession"], input[name="LateFee"], input[name="AdmissionFee"], input[name="TuitionFee"], input[name="ActivityFee"], input[name="DevelopmentFee"], input[name="ConveyanceFee"]').bind("keydown, keypress, keyup", function () {
+        cal();
+    });
+    $('select[name="FromInstallment"], select[name="ToInstallment"]').change(function () {
+        cal();
+    });
+
+    function cal() {
+        var v1 = Number($('input[name="TuitionFee"]').val());
+        var v2 = Number($('input[name="ActivityFee"]').val());
+        var v3 = Number($('input[name="DevelopmentFee"]').val());
+        var v4 = Number($('input[name="ConveyanceFee"]').val());
+        var v5 = Number($('input[name="Concession"]').val());
+        var v6 = Number($('input[name="LateFee"]').val());
+        var v7 = Number($('input[name="AdmissionFee"]').val());
+
+        var from = Number($('select[name="FromInstallment"]').val());
+        var to = Number($('select[name="ToInstallment"]').val());
+        var numberOfIns = to - from + 1;
+        $('#grandTotal').val((((v1 + v2 + v3 + v4) * 1) - v5 + v6 + v7).toFixed(2));
+    }
+</script>
+
+@if (Model == null)
+{
+    <div class="row" style="margin-top:20px;">
+        <div class="alert alert-danger">
+            Record Not Found for this Receipt Number in Database.
+        </div>
+    </div>
+}
+else
+{
+
+    using (Html.BeginForm("Update", "Fee", FormMethod.Post, new { @class = "form-horizontal" }))
+    {
+        <input type="hidden" name="transactionID" value="@ViewBag.TransactionID" />
+        @Html.HiddenFor(m => m.FromInstallment) @Html.HiddenFor(m => m.ToInstallment)
+    <div class="row">
+        <div class="col-md-12">
+            <h4 class="form-h4">Fee Payment Details</h4>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.FromInstallment, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.DropDownListFor(m => m.FromInstallment, new SelectListItem[]
+                    {
+                        new SelectListItem{ Text="1"},
+                        new SelectListItem{ Text="2"},
+                        new SelectListItem{ Text="3"},
+                        new SelectListItem{ Text="4"},
+                        new SelectListItem{ Text="5"}
+                    }, new { @class = "form-control disabled", disabled = "disabled" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.ToInstallment, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.DropDownListFor(m => m.ToInstallment, new SelectListItem[]
+                    {
+                        new SelectListItem{ Text="1"},
+                        new SelectListItem{ Text="2"},
+                        new SelectListItem{ Text="3"},
+                        new SelectListItem{ Text="4"},
+                        new SelectListItem{ Text="5"}
+                    }, new { @class = "form-control disabled", disabled = "disabled" })
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.AdmissionFee, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.AdmissionFee, new { @class = "form-control", placeholder = "Admission Fee" })
+                    @Html.ValidationMessageFor(m => m.AdmissionFee)
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.TuitionFee, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.TuitionFee, new { @class = "form-control", placeholder = "Tuition Fee" })
+                    @Html.ValidationMessageFor(m => m.TuitionFee)
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.ActivityFee, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.ActivityFee, new { @class = "form-control", placeholder = "Activity Fee" })
+                    @Html.ValidationMessageFor(m => m.ActivityFee)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.DevelopmentFee, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.DevelopmentFee, new { @class = "form-control", placeholder = "Development Fee" })
+                    @Html.ValidationMessageFor(m => m.DevelopmentFee)
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.ConveyanceFee, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.ConveyanceFee, new { @class = "form-control", placeholder = "Conveyance Fee" })
+                    @Html.ValidationMessageFor(m => m.ConveyanceFee)
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Concession, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.Concession, new { @class = "form-control", placeholder = "Concession" })
+                    @Html.ValidationMessageFor(m => m.Concession)
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.LateFee, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.LateFee, new { @class = "form-control", placeholder = "Late Fee" })
+                    @Html.ValidationMessageFor(m => m.LateFee)
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label class="control-label col-md-6">Total</label>
+                <div class="col-md-6">
+                    <input type="text" class="form-control disabled" id="grandTotal" disabled="disabled" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="padding:20px">
+        <div class="col-md-12" style="text-align:center">
+            <input type="submit" class="btn btn-primary" value="Save Changes" />
+            <input type="reset" class="btn btn-default" />
+        </div>
+    </div>
+
+    <script>cal();</script>
+    <script>
+        $("form").removeData("validator");
+        $("form").removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse("form");
+    </script>
+    }
+}

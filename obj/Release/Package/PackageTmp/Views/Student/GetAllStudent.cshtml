@@ -1,0 +1,68 @@
+﻿@{
+    ViewBag.Title = "Get All Student";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+@section PageHeader{
+    Export Student to Excel
+}
+
+
+
+@using (Html.BeginForm("GetAllStudent", "Student", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <h4 class="form-h4">Select Criteria</h4>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label class="col-md-6 control-label">Session</label>
+                <div class="col-md-6">
+                    @Html.DropDownList("session", new SelectList(new[] { "All", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020" }), new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label class="col-md-6 control-label">Class</label>
+                <div class="col-md-6">
+                    <select name="class" class="form-control">
+                        <option value="all">All</option>
+                        <option>NUR</option>
+                        <option>KG</option>
+                        <option>Prep</option>
+                        <option value="1">1st</option>
+                        <option value="2">2nd</option>
+                        <option value="3">3rd</option>
+                        <option value="4">4th</option>
+                        <option value="5">5th</option>
+                        <option value="6">6th</option>
+                        <option value="7">7th</option>
+                        <option value="8">8th</option>
+                        <option value="9">9th</option>
+                        <option value="10">10th</option>
+                        <option value="11">11th</option>
+                        <option value="12">12th</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label class="col-md-6 control-label">Section</label>
+                <div class="col-md-6">
+                    @Html.DropDownList(
+                        "section",
+                            new SelectList(new[] { "All", "A", "B", "C", "D", "E", "F", "G", "NEW" })
+                            , new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12" style="text-align:center;">
+            <input type="submit" style="margin-top:30px;" class="btn btn-success btn-lg" value="Export all Records to Excel" />
+        </div>
+    </div>
+}

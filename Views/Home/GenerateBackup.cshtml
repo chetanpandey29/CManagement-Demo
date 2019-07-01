@@ -1,0 +1,39 @@
+﻿@{
+    ViewBag.Title = "GenerateBackup";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+@section PageHeader{
+    Generate Database Backup
+}
+
+@if (ViewBag.Success != null)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-success">
+                <b>Database backup successfully created on Server.</b>
+            </div>
+        </div>
+    </div>
+}
+
+@if (ViewBag.Error != null)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-danger">
+                <b>@ViewBag.Error</b>
+            </div>
+        </div>
+    </div>
+}
+
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-md-12" style="text-align:center;">
+            <input type="submit" style="margin-top:30px;" class="btn btn-success btn-lg" value="Generate" />
+        </div>
+    </div>
+}

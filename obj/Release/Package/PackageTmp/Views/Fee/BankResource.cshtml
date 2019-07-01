@@ -1,0 +1,187 @@
+﻿@model CentralAcademy.MyModels.BankResource
+@{
+    ViewBag.Title = "BankResource";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+@section PageHeader{
+    Bank Resource Details
+}
+
+@using (Html.BeginForm("Deposit", "Fee", FormMethod.Get, new { @class = "form-horizontal" }))
+{
+    <div class="=row">
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.SRNo, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="S.No">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.FeeBookNumber, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Fee Book Number">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.InstalmentNo, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Instalment Number">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="=row">
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Mode, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.DropDownListFor(
+                        m => m.Mode, new SelectListItem[]
+                        {
+                            new SelectListItem() { Text = "Cash in School"},
+                            new SelectListItem() { Text="Cash in Bank"},
+                            new SelectListItem() { Text="Cheque in Bank"},
+                            new SelectListItem() { Text="Other"},
+
+                           }, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Date, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="dd-mm-yyyy">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Name, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Student Name">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="=row">
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Class, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Class">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Section, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Section">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.ConveyanceFee, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Conveyance Fee">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="=row">
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.TuitionFee, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Tuition Fee">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.ActivityFee, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Activity Fee">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Development, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Development Fee">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="=row">
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.LateFee, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Late Fee">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.TotalFee, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Total Fee">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12" style="text-align:center">
+            @*<input type="submit" class="btn btn-primary" value="Submit" />
+            <input type="reset" class="btn btn-default" />*@
+        </div>
+    </div>
+
+    <div class="row" style="margin-top:20px;">
+        <div class="alert alert-danger">
+            This page is Under Construction
+        </div> 
+    </div>
+}
+

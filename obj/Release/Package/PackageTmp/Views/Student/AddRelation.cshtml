@@ -1,0 +1,116 @@
+﻿@model System.Collections.Generic.List<CentralAcademy.MyModels.Relation>
+
+@{
+    ViewBag.Title = "AddRelation";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+@section PageHeader{
+    Add Brother & Sister
+}
+
+@if (ViewBag.NotFound != null)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-danger">
+                No Record Found
+            </div>
+        </div>
+    </div>
+}
+
+@if (!string.IsNullOrWhiteSpace(Request.QueryString["Err"]))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-danger">
+                Given Scholar Number Record is not Found
+            </div>
+        </div>
+    </div>
+}
+
+@using (Html.BeginForm("AddRelation", "Student", FormMethod.Get, new { @class = "form-horizontal" }))
+{
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="col-md-6 control-label">Scholar Number</label>
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="id" id="id" placeholder="Scholar Number" value="@Request.QueryString["id"]">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="submit">Go</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h4 class="form-h4">Current relations</h4>
+    </div>
+</div>
+
+<table class="table table-bordered table-hover table-striped">
+    <thead>
+        <tr>
+            <th>Schloar Number</th>
+            <th>Name</th>
+            <th>Relation</th>
+            <th>Class</th>
+            <th>Section</th>
+            <th></th>
+        </tr>
+    </thead>
+    @if (Model == null || Model.Count == 0)
+    {
+        <tr>
+            <td colspan="6" style="text-align:center"><strong>@(ViewBag.NotFound == "1" ? "Invalid Scholar Number" : "No Relationship found")</strong></td>
+        </tr>
+    }
+    else
+    {
+        foreach (var rel in Model)
+        {
+            <tr>
+                <td>@rel.ScholarNumber</td>
+                <td>@rel.Name</td>
+                <td>@rel.RelationName</td>
+                <td>@rel.Class</td>
+                <td>@rel.Section</td>
+                <td>@Html.ActionLink("Remove", "DeleteRelation", new { from = (string.IsNullOrWhiteSpace(Request.QueryString["id"]) ? ViewContext.RouteData.Values["id"] : Request.QueryString["id"]), to = rel.ScholarNumber.ToString() }, new { @class = "btn btn-danger btn-sm" })</td>
+            </tr>
+        }
+    }
+</table>
+
+@if (ViewBag.NotFound != "1")
+{
+    using (Html.BeginForm("AddRelation", "Student", FormMethod.Post, new { @class = "form-horizontal", id = Request.QueryString["id"] }))
+    {
+        <input type="hidden" name="id" value="@Request.QueryString["id"]" />
+        <div class="row">
+            <div class="col-md-12">
+                <h4 class="form-h4">Add New Relation</h4>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-md-6 control-label">Scholar Number</label>
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="relation" placeholder="Scholar Number">
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="submit">Add</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}

@@ -1,0 +1,429 @@
+﻿@model CentralAcademy.MyModels.StudentModel
+
+@{
+    ViewBag.Title = "Add";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+@section PageHeader{
+    Add New Student
+}
+
+
+@if (!string.IsNullOrWhiteSpace(Request.QueryString["Save"]))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-success">
+                <b>Registration Successful. Scholar Number <i>@Request.QueryString["Save"]</i></b>
+            </div>
+        </div>
+    </div>
+}
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-@ViewBag.MessageClass">
+        @ViewBag.Message
+    </div>
+}
+
+@using (Html.BeginForm("Add", "Student", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <h4 class="form-h4">Student details</h4>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.SRNo, new { @class = "col-md-6 control-label" })
+
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.SRNo, new { @class = "form-control", placeholder = "Scholar Number", value = "1" })
+                    @Html.ValidationMessageFor(m => m.SRNo)
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.AdmissionDate, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.AdmissionDate, "{0:dd-MM-yyyy}", new { @class = "form-control", placeholder = "dd-mm-yyyy", data_val = "true", data_val_regex = "Invalid date format", data_val_regex_pattern = @"^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$" })
+                    @Html.ValidationMessageFor(m => m.AdmissionDate)
+                    <script>
+                        $('input[name="AdmissionDate"]').val('@DateTime.Now.ToString("dd-MM-yyyy")');
+                    </script>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Session, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.DropDownListFor(m => m.Session, new SelectList(new[] { "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020" }), new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Session)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.StudentName, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.StudentName, new { @class = "form-control", placeholder = "Student Name" })
+                    @Html.ValidationMessageFor(m => m.StudentName)
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.DateOfBirth, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.DateOfBirth, "{0:dd-MM-yyyy}", new { @class = "form-control", placeholder = "dd-mm-yyyy", data_val = "true", data_val_regex = "Invalid date format", data_val_regex_pattern = @"^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$" })
+                    @Html.ValidationMessageFor(m => m.DateOfBirth)
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Class, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.DropDownListFor(
+                        m => m.Class, new SelectListItem[]
+                        {
+                            new SelectListItem() { Text = "NUR"},
+                            new SelectListItem() { Text="KG"},
+                            new SelectListItem() { Text="Prep"},
+                            new SelectListItem() { Text="1st", Value = "1"},
+                            new SelectListItem() { Text="2nd", Value = "2"},
+                            new SelectListItem() { Text="3rd", Value = "3"},
+                            new SelectListItem() { Text="4th", Value= "4"},
+                            new SelectListItem() { Text="5th", Value = "5"},
+                            new SelectListItem() { Text="6th", Value = "6"},
+                            new SelectListItem() { Text="7th", Value = "7"},
+                            new SelectListItem() { Text="8th", Value = "8"},
+                            new SelectListItem() { Text="9th", Value = "9"},
+                            new SelectListItem() { Text="10th", Value = "10"},
+                            new SelectListItem() { Text="11th", Value = "11"},
+                            new SelectListItem() { Text="12th", Value = "12"},
+                        }, new { @class = "form-control", style = "display:inline; width:90px;" })
+                    @Html.DropDownListFor(
+                        m => m.Section,
+                            new SelectList(new[] { "A", "B", "C", "D", "E", "F", "G", "NEW" })
+                            , new { @class = "form-control", style = "display:inline; width:70px;" })
+                </div>
+                @Html.ValidationMessageFor(m => m.Section)
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.PreviousSchool, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.PreviousSchool, new { @class = "form-control", placeholder = "Previous School" })
+                    @Html.ValidationMessageFor(m => m.PreviousSchool)
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.InitialClass, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.InitialClass, new { @class = "form-control", placeholder = "Initial Class" })
+                    @Html.ValidationMessageFor(m => m.InitialClass)
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Gender, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.DropDownListFor(
+                        m => m.Gender, new SelectListItem[]
+                        {
+                            new SelectListItem() { Text = "Male"},
+                            new SelectListItem() { Text = "Female"}
+                        }, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Gender)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+       
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Nationality, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.DropDownListFor(m => m.Nationality, new SelectList(new[] { "Indian", "Other" }, "Indian"), new { @class = "form-control", data_val = "false" })
+                    @Html.ValidationMessageFor(m => m.Nationality)
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.EmailID, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.EmailID, new { @class = "form-control", placeholder = "Email ID", data_val = "true", data_val_regex = "Invalid Email ID", data_val_regex_pattern = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$" })
+                    @Html.ValidationMessageFor(m => m.EmailID)
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Group, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.Group, new { @class = "form-control", placeholder = "Group" })
+                    @Html.ValidationMessageFor(m => m.Group)
+                </div>
+            </div>
+        </div>
+
+</div>
+
+     <div class="row">
+      
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.FeeBookNumber, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.FeeBookNumber, new { @class = "form-control", placeholder = "Fee Book Number" })
+                    @Html.ValidationMessageFor(m => m.FeeBookNumber)
+                </div>
+            </div>
+        </div>
+         
+    </div>
+    <div class="row">
+            <div class="col-md-12">
+                <h4 class="form-h4">Documents details</h4>
+            </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <div class="col-md-8 col-md-offset-6">
+                    <div class="checkbox">
+                        <label>
+                          @Html.CheckBoxFor(m=>m.tc)
+                           T.C
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            @Html.CheckBoxFor(m => m.bc)
+                            Birth Certificate
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            @Html.CheckBoxFor(m => m.mReport)
+                           Mark Sheet/ReportCard
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            @Html.CheckBoxFor(m => m.Photo)
+                            Photo
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            @Html.CheckBoxFor(m => m.affidavit)
+                            Affidavit
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.OtherDoc, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.OtherDoc, new { @class = "form-control", placeholder = "Other Document" })
+                    @Html.ValidationMessageFor(m => m.Group)
+                </div>
+            </div>
+        </div>
+        </div>
+    
+        <div class="row">
+            <div class="col-md-12">
+                <h4 class="form-h4">Address details</h4>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.House, new { @class = "col-md-6 control-label" })
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(m => m.House, new { @class = "form-control", placeholder = "House No" })
+                        @Html.ValidationMessageFor(m => m.Group)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Street, new { @class = "col-md-6 control-label" })
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(m => m.Street, new { @class = "form-control", placeholder = "Street" })
+                        @Html.ValidationMessageFor(m => m.Group)
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Locality, new { @class = "col-md-6 control-label" })
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(m => m.Locality, new { @class = "form-control", placeholder = "Locality" })
+                        @Html.ValidationMessageFor(m => m.Group)
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div class="row">
+                
+            
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.City, new { @class = "col-md-6 control-label" })
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(m => m.City, new { @class = "form-control", placeholder = "City" })
+                        @Html.ValidationMessageFor(m => m.Group)
+                    </div>
+                </div>
+            </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.pin, new { @class = "col-md-6 control-label" })
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(m => m.pin, new { @class = "form-control", placeholder = "Pin No" })
+                            @Html.ValidationMessageFor(m => m.Group)
+                        </div>
+                    </div>
+                </div>
+      </div>
+           
+   
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <div class="col-md-8 col-md-offset-6">
+                    <div class="checkbox">
+                        <label>
+                            @Html.CheckBoxFor(m => m.Concession)
+                            Concession
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            @Html.CheckBoxFor(m => m.Transport)
+                            Transport
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h4 class="form-h4">Parents details</h4>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.FatherName, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.FatherName, new { @class = "form-control", placeholder = "Father Name" })
+                    @Html.ValidationMessageFor(m => m.FatherName)
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.FatherContactNo, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.FatherContactNo, new { @class = "form-control", placeholder = "Contact Number" })
+                    @Html.ValidationMessageFor(m => m.FatherContactNo)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.MotherName, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.MotherName, new { @class = "form-control", placeholder = "Mother Name" })
+                    @Html.ValidationMessageFor(m => m.MotherName)
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.MotherContactNo, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.MotherContactNo, new { @class = "form-control", placeholder = "Contact Number" })
+                    @Html.ValidationMessageFor(m => m.MotherContactNo)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h4 class="form-h4">Emergency Contact Person</h4>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.EmerygencyContactPerson, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.EmerygencyContactPerson, new { @class = "form-control", placeholder = "Name" })
+                    @Html.ValidationMessageFor(m => m.EmerygencyContactPerson)
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.EmergencyRelation, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.EmergencyRelation, new { @class = "form-control", placeholder = "Relation" })
+                    @Html.ValidationMessageFor(m => m.EmergencyRelation)
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.EmergencyContactNumber, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.EmergencyContactNumber, new { @class = "form-control", placeholder = "Number" })
+                    @Html.ValidationMessageFor(m => m.EmergencyContactNumber)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.EmergencyAddress, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.TextAreaFor(m => m.EmergencyAddress, new { @class = "form-control", placeholder = "Address" })
+                    @Html.ValidationMessageFor(m => m.EmergencyAddress)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12" style="text-align:center">
+            <input type="submit" class="btn btn-primary" value="Submit" />
+            <input type="reset" class="btn btn-default" />
+        </div>
+    </div>
+}
+
+<script>
+    $("input[data-val-date]").removeAttr("data-val-date");
+</script>

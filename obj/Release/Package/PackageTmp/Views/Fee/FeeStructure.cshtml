@@ -1,0 +1,147 @@
+﻿@model CentralAcademy.MyModels.FeeStructure
+@{
+    ViewBag.Title = "FeeStructuer";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+@section PageHeader{
+    Fee Structure
+}
+
+@if (false)
+{
+    <script src="~/Scripts/jquery-2.0.3.min.js"></script>
+}
+
+
+@if (!string.IsNullOrWhiteSpace(Request.QueryString["Save"]))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-success">
+                <b>Changes Saved Successfully</b>
+            </div>
+        </div>
+    </div>
+}
+
+@using (Html.BeginForm("FeeStructure", "Fee", FormMethod.Get, new { @class = "form-horizontal" }))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <h4 class="form-h4">Fee Structure</h4>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="col-md-6 control-label" for="id"></label>
+                <div class="col-md-6">
+                    <select class="form-control" name="id" id="id" onchange="this.form.submit();">
+                        <option value="1">Nur</option>
+                        <option value="2">KG</option>
+                        <option value="3">Prep</option>
+                        <option value="4">1st</option>
+                        <option value="5">2nd</option>
+                        <option value="6">3rd</option>
+                        <option value="7">4th</option>
+                        <option value="8">5th</option>
+                        <option value="9">6th</option>
+                        <option value="10">7th</option>
+                        <option value="11">8th</option>
+                        <option value="12">9th</option>
+                        <option value="13">10th</option>
+                        <option value="14">11th</option>
+                        <option value="15">12th</option>
+                     
+                    </select>
+                </div>
+            </div>
+        </div>
+        <script>
+            $('select#id').val('@Model.GroupID');
+        </script>
+    </div>
+}
+
+@using (Html.BeginForm("FeeStructure", "Fee", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @Html.HiddenFor(m => m.GroupID)
+    <div class="row">
+        <div class="col-md-12">
+            <h4 class="form-h4">Fee details for <b>Each</b> Instalment for selected group</h4>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(m => m.TuitionFee, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.TuitionFee, new { @class = "form-control", placeholder = "Tuition Fee" })
+                    @Html.ValidationMessageFor(m => m.TuitionFee)
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(m => m.ActivityFee, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.ActivityFee, new { @class = "form-control", placeholder = "Activity Fee" })
+                    @Html.ValidationMessageFor(m => m.ActivityFee)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(m => m.DevelopmentFee, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.DevelopmentFee, new { @class = "form-control", placeholder = "Development Fee" })
+                    @Html.ValidationMessageFor(m => m.DevelopmentFee)
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(m => m.ConveyanceFee, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.ConveyanceFee, new { @class = "form-control", placeholder = "Conveyance Fee" })
+                    @Html.ValidationMessageFor(m => m.ConveyanceFee)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(m => m.AdmissionFee, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.AdmissionFee, new { @class = "form-control", placeholder = "Admission Fee" })
+                    @Html.ValidationMessageFor(m => m.AdmissionFee)
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="col-md-6 control-label">Total</label>
+                <div class="col-md-6">
+                    <input type="text" id="grandTotal" class="form-control disabled" value="@((Model.ActivityFee + Model.ConveyanceFee + Model.DevelopmentFee + Model.TuitionFee + Model.AdmissionFee).ToString("0.00"))" disabled="disabled" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12" style="text-align:center; margin-top:20px;">
+            <input type="submit" class="btn btn-primary" value="Save Changes" />
+        </div>
+    </div>
+}
+
+
+<script type="text/javascript">
+    $('input[name="TuitionFee"], input[name="ActivityFee"], input[name="DevelopmentFee"], input[name="ConveyanceFee"], input[name="AdmissionFee"]').bind("keydown, keypress, keyup", function () {
+        var v1 = Number($('input[name="TuitionFee"]').val());
+        var v2 = Number($('input[name="ActivityFee"]').val());
+        var v3 = Number($('input[name="DevelopmentFee"]').val());
+        var v4 = Number($('input[name="ConveyanceFee"]').val());
+        var v5 = Number($('input[name="AdmissionFee"]').val());
+
+        $('#grandTotal').val((v1 + v2 + v3 + v4 + v5).toFixed(2));
+    });
+</script>
